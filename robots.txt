@@ -1,0 +1,15 @@
+User-Agent: *
+Allow: /
+Allow: /explore
+Allow: /destinations/
+Disallow: /home
+Disallow: /trips
+Disallow: /saved
+Disallow: /planner
+Disallow: /profile
+Disallow: /admin
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://raiden-56.github.io/travel-mate/sitemap.xml

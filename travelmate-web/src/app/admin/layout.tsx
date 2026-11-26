@@ -16,13 +16,13 @@ const nav = [
 ];
 
 function AdminNav() {
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/(.)\/$/, "$1");
   const user = useAuthStore((s) => s.user);
   const items = nav.filter((n) => hasPermission(user, n.permission));
   return (
     <ul className="flex gap-1 overflow-x-auto lg:flex-col">
       {items.map((n) => {
-        const active = n.href === "/admin" ? pathname === "/admin" : pathname.startsWith(n.href);
+        const active = n.href === "/admin" ? pathname === "/admin" : pathname.startsWith(n.href.replace(/s$/, ""));
         return (
           <li key={n.href}>
             <Link

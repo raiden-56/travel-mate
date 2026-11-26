@@ -1,0 +1,62 @@
+name: Deploy demo to GitHub Pages
+
+# Builds travelmate-web as a static export with the in-browser demo backend and publishes it to
+# the gh-pages branch, which GitHub Pages serves at https://<owner>.github.io/<repo>/.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: travelmate-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: travelmate-web/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Type check, lint and unit tests
+        run: |
+          pnpm typecheck
+          pnpm lint
+          pnpm test
+
+      - name: Build static demo
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_DEMO_MODE: "1"
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        run: pnpm exec next build
+
+      - name: Publish to gh-pages
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          touch out/.nojekyll   # keep the _next/ folder (Jekyll would hide it)
+          cd out
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Deploy demo from ${GITHUB_SHA::7}"
+          git push --force -q "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages

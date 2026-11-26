@@ -1,5 +1,7 @@
 ﻿import { expect, test, type Page } from "@playwright/test";
 
+test.skip(!!process.env.E2E_DEMO, "Server-build journey; the static demo has its own spec");
+
 // One traveler walks the Phase 1 journey end to end against the real API.
 const stamp = Date.now();
 const traveler = { name: "E2E Traveler", email: `e2e-${stamp}@travelmate.test`, password: `Journey${stamp % 10000}x` };

@@ -16,6 +16,7 @@ import { Card, Skeleton } from "@/components/ui/misc";
 import { formatDateRange, greeting } from "@/lib/dates";
 import { formatMoney } from "@/lib/money";
 import type { TripDto } from "@/types/api";
+import { tripHref } from "@/lib/routes";
 
 function UpcomingTrip({ trip }: { trip: TripDto }) {
   const itinerary = useItinerary(trip.id);
@@ -25,7 +26,7 @@ function UpcomingTrip({ trip }: { trip: TripDto }) {
   const cover = tripCover(trip);
   const countdown = countdownLabel(trip);
   return (
-    <Link href={`/trips/${trip.id}`} className="group relative isolate block overflow-hidden rounded-xl bg-forest text-white">
+    <Link href={tripHref(trip.id)} className="group relative isolate block overflow-hidden rounded-xl bg-forest text-white">
       {cover && <Image src={cover} alt="" fill sizes="(min-width: 1024px) 66vw, 100vw" className="-z-10 object-cover opacity-70 transition-transform duration-700 group-hover:scale-[1.02]" />}
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
       <div className="flex min-h-[280px] flex-col justify-end p-6 sm:p-8">
@@ -182,7 +183,7 @@ export default function HomePage() {
           <h2 className="font-display text-base font-semibold">Pack smarter for {next?.destinationName}</h2>
           <p className="mt-1 text-sm text-ink-muted">Get a checklist based on the weather, the trip length and what you&apos;ll be doing.</p>
           <Button className="mt-4" size="sm" variant="secondary" asChild>
-            <Link href={`/trips/${next?.id}/checklist`}>Open checklist <ArrowRight /></Link>
+            <Link href={tripHref(next?.id ?? "", "checklist")}>Open checklist <ArrowRight /></Link>
           </Button>
         </section>
       )}

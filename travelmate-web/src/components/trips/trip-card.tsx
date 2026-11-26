@@ -5,6 +5,7 @@ import type { TripDto } from "@/types/api";
 import { daysUntil, formatDateRange } from "@/lib/dates";
 import { TripStatusChip } from "@/components/common/labels";
 import { Skeleton } from "@/components/ui/misc";
+import { tripHref } from "@/lib/routes";
 
 export function tripCover(trip: TripDto): string | null {
   return trip.coverImageUrl ?? trip.destination?.heroImageUrl ?? null;
@@ -25,7 +26,7 @@ export function TripCard({ trip }: { trip: TripDto }) {
   const countdown = countdownLabel(trip);
   return (
     <Link
-      href={`/trips/${trip.id}`}
+      href={tripHref(trip.id)}
       className="group flex overflow-hidden rounded-lg bg-surface shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)] sm:flex-col"
     >
       <div className="relative aspect-square w-28 shrink-0 bg-surface-muted sm:aspect-[16/9] sm:w-full">

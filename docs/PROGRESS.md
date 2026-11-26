@@ -49,6 +49,13 @@ columns already, so these build on what's there.
 - E2E (Playwright, Edge, against H2 local profile): 10/10 pass — register, discover + save, AI plan → trip,
   add activity, expense, checklist, sign out, admin creates a destination, public SEO page on mobile.
 
+## GitHub Pages demo
+
+| Item | Status | Notes |
+|---|---|---|
+| Static export with in-browser backend (`src/demo`) | 🧪 | 7 unit tests + 4-step Playwright journey (`E2E_DEMO=1`) |
+| Deploy workflow (`.github/workflows/pages.yml`) | ✅ | Publishes `out/` to `gh-pages` on push to `main` |
+
 ## Known limitations
 
 - **Not yet exercised:** the `postgres` profile and PostGIS migration (Docker daemon was off), and the Claude

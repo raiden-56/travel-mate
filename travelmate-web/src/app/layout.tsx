@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/manrope";
 import { Providers } from "@/components/providers";
+import { DemoBanner } from "@/components/layout/demo-banner";
 import "./globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -33,7 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-dvh">
-        <Providers>{children}</Providers>
+        <Providers>
+          <DemoBanner />
+          {children}
+        </Providers>
       </body>
     </html>
   );

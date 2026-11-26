@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams } from "next/navigation";
+import { useRouteId } from "@/lib/routes";
 import { ListChecks, Plus, Sparkles, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -123,7 +123,7 @@ function ChecklistCard({ tripId, list }: { tripId: string; list: ChecklistDto })
 }
 
 export default function ChecklistPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const lists = useChecklists(id);
   const templates = useChecklistTemplates();
   const create = useCreateChecklist(id);

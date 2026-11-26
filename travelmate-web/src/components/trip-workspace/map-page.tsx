@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams } from "next/navigation";
+import { useRouteId } from "@/lib/routes";
 import { Layers, Route, Shuffle } from "lucide-react";
 import { toast } from "sonner";
 import { useTrip } from "@/features/trips/hooks";
@@ -44,7 +44,7 @@ function AttractionPopup({ a, dayCount, onAdd, pending }: { a: AttractionDto; da
 }
 
 export default function TripMapPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const trip = useTrip(id).data!;
   const itinerary = useItinerary(id);
   const destination = useDestination(trip.destination?.slug ?? "");

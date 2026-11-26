@@ -15,6 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { serverGet } from "@/lib/server-api";
+import { IS_DEMO } from "@/demo/config";
 import type { DestinationDetail } from "@/types/api";
 import { formatDuration } from "@/lib/dates";
 import { formatMoneyRange } from "@/lib/money";
@@ -28,6 +29,13 @@ import { WeatherPanel } from "@/components/destinations/weather-panel";
 import { AttractionMap } from "@/components/destinations/attraction-map";
 
 type Props = { params: Promise<{ slug: string }> };
+
+/** Static demo build pre-renders the seed destinations; the server build renders on demand. */
+export async function generateStaticParams() {
+  if (!IS_DEMO) return [];
+  const { seedSlugs } = await import("@/demo/router");
+  return seedSlugs().map((slug) => ({ slug }));
+}
 
 /** JSON for inline <script> tags; escapes `<` so admin-entered text can't close the tag. */
 function safeJson(value: unknown): string {

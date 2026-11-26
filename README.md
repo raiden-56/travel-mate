@@ -77,6 +77,27 @@ cd travelmate-web; pnpm e2e
 
 Set `E2E_ADMIN_EMAIL` / `E2E_ADMIN_PASSWORD` to include the admin journey.
 
+## Live demo (GitHub Pages)
+
+**https://raiden-56.github.io/travel-mate/**
+
+GitHub Pages only serves static files, so the demo is a static export of `travelmate-web` with an
+in-browser implementation of the API (`travelmate-web/src/demo/`). Accounts, trips, expenses and
+checklists are saved in the visitor's own browser only; "Reset demo" in the banner clears them.
+Weather (Open-Meteo) and driving routes (OSRM demo server) are live; places and prices are the
+curated seed data, labelled as such. A demo administrator (credentials shown on the sign-in page)
+opens the admin portal. Destinations an admin adds in the demo don't get public pages, because
+those are pre-rendered at build time.
+
+`.github/workflows/pages.yml` rebuilds and publishes it on every push to `main`. Build it locally with:
+
+```powershell
+cd travelmate-web; $env:NEXT_PUBLIC_DEMO_MODE='1'; $env:NEXT_PUBLIC_BASE_PATH='/travel-mate'; pnpm exec next build
+```
+
+Output goes to `travelmate-web/out/`. Demo routes live in `*.demo.tsx` files and server-build
+routes in `*.dyn.tsx`; `next.config.ts` picks one set via `pageExtensions`.
+
 ## Behind a corporate TLS proxy
 
 If HTTPS is re-signed by a corporate root certificate, Java and Node don't trust it by default:

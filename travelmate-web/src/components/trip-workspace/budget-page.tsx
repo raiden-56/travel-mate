@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams } from "next/navigation";
+import { useRouteId } from "@/lib/routes";
 import { Pencil, Plus, Receipt, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useBudget, useDeleteExpense, useExpenses } from "@/features/budget/hooks";
@@ -29,7 +29,7 @@ function Stat({ label, value, sub }: { label: React.ReactNode; value: string; su
 }
 
 export default function BudgetPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const budget = useBudget(id);
   const expenses = useExpenses(id);
   const del = useDeleteExpense(id);

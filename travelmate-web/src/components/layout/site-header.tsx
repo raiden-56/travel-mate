@@ -47,9 +47,11 @@ const appLinks = [
   { href: "/saved", label: "Saved", icon: Heart },
 ];
 
-function isActive(pathname: string, href: string) {
+function isActive(rawPathname: string, href: string) {
+  // Static export uses trailing slashes (/home/); compare without them.
+  const pathname = rawPathname.replace(/(.)\/$/, "$1");
   if (href === "/home") return pathname === "/home";
-  return pathname === href || pathname.startsWith(`${href}/`) || (href === "/explore" && pathname.startsWith("/destinations"));
+  return pathname === href || pathname.startsWith(`${href}/`) || (href === "/explore" && (pathname.startsWith("/destinations") || pathname.startsWith("/search")));
 }
 
 function UserMenu() {

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, ExternalLink, Eye, EyeOff, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminDestination, useDeleteAttraction, useDestinationAction, useSaveDestination } from "@/features/admin/hooks";
@@ -18,9 +18,10 @@ import { formatDuration } from "@/lib/dates";
 import { formatMoneyRange } from "@/lib/money";
 import { titleCase } from "@/lib/utils";
 import type { AttractionDto } from "@/types/api";
+import { adminDestinationHref, useRouteId } from "@/lib/routes";
 
 export default function AdminDestinationEditPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const isNew = id === "new";
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
@@ -45,7 +46,7 @@ export default function AdminDestinationEditPage() {
           d && (
             <>
               {d.status === "PUBLISHED" && (
-                <Button variant="secondary" size="sm" asChild><a href={`/destinations/${d.slug}`} target="_blank" rel="noopener noreferrer"><ExternalLink /> View</a></Button>
+                <Button variant="secondary" size="sm" asChild><Link href={`/destinations/${d.slug}`} target="_blank" rel="noopener noreferrer"><ExternalLink /> View</Link></Button>
               )}
               {hasPermission(user, "destination:publish") && (
                 <Button
@@ -98,7 +99,7 @@ export default function AdminDestinationEditPage() {
             {
               onSuccess: (saved) => {
                 toast.success(isNew ? "Draft created — add places, then publish" : "Saved");
-                if (isNew) router.replace(`/admin/destinations/${saved.id}`);
+                if (isNew) router.replace(adminDestinationHref(saved.id));
               },
               onError: (e) => toast.error(errorMessage(e)),
             },

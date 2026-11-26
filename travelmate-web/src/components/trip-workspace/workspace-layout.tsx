@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { CalendarDays, ChevronLeft, MapPin, Users } from "lucide-react";
 import { useTrip } from "@/features/trips/hooks";
 import { ErrorState } from "@/components/common/states";
@@ -12,21 +12,22 @@ import { countdownLabel, tripCover } from "@/components/trips/trip-card";
 import { Skeleton } from "@/components/ui/misc";
 import { formatDateRange } from "@/lib/dates";
 import { cn } from "@/lib/utils";
+import { tripHref, tripTabOf, useRouteId, type TripTab } from "@/lib/routes";
 
-const tabs = [
-  { href: "", label: "Overview" },
-  { href: "/itinerary", label: "Itinerary" },
-  { href: "/map", label: "Map" },
-  { href: "/budget", label: "Budget" },
-  { href: "/checklist", label: "Checklist" },
-  { href: "/settings", label: "Settings" },
+const tabs: { tab: TripTab; label: string }[] = [
+  { tab: "", label: "Overview" },
+  { tab: "itinerary", label: "Itinerary" },
+  { tab: "map", label: "Map" },
+  { tab: "budget", label: "Budget" },
+  { tab: "checklist", label: "Checklist" },
+  { tab: "settings", label: "Settings" },
 ];
 
 export default function TripWorkspaceLayout({ children }: { children: React.ReactNode }) {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const pathname = usePathname();
   const trip = useTrip(id);
-  const base = `/trips/${id}`;
+  const currentTab = tripTabOf(pathname);
 
   if (trip.isLoading)
     return (
@@ -90,8 +91,8 @@ export default function TripWorkspaceLayout({ children }: { children: React.Reac
       <nav aria-label="Trip sections" className="sticky top-16 z-30 border-b border-line bg-canvas/95 backdrop-blur">
         <ul className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 sm:px-6">
           {tabs.map((tab) => {
-            const href = `${base}${tab.href}`;
-            const active = tab.href === "" ? pathname === base : pathname.startsWith(href);
+            const href = tripHref(id, tab.tab);
+            const active = currentTab === tab.tab;
             return (
               <li key={tab.label}>
                 <Link

@@ -12,6 +12,7 @@ import { TRIP_TRANSITIONS, useDeleteTrip, useTripAction } from "@/features/trips
 import { errorMessage } from "@/lib/api-client";
 import { titleCase } from "@/lib/utils";
 import type { TripDto, TripStatus } from "@/types/api";
+import { tripHref } from "@/lib/routes";
 
 const transitionLabel: Partial<Record<TripStatus, string>> = {
   UPCOMING: "Mark as upcoming",
@@ -56,11 +57,11 @@ export function TripActions({ trip }: { trip: TripDto }) {
         </DropdownTrigger>
         <DropdownContent className="w-56">
           <DropdownItem asChild>
-            <Link href={`/trips/${trip.id}/settings`}>
+            <Link href={tripHref(trip.id, "settings")}>
               <Pencil /> Edit trip details
             </Link>
           </DropdownItem>
-          <DropdownItem onSelect={() => run({ kind: "duplicate" }, "Trip duplicated", (t) => router.push(`/trips/${t.id}`))}>
+          <DropdownItem onSelect={() => run({ kind: "duplicate" }, "Trip duplicated", (t) => router.push(tripHref(t.id)))}>
             <Copy /> Duplicate
           </DropdownItem>
           {TRIP_TRANSITIONS[trip.status].length > 0 && (

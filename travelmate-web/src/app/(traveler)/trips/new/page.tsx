@@ -11,6 +11,7 @@ import { useCreateTrip } from "@/features/trips/hooks";
 import { useDestination } from "@/features/destinations/hooks";
 import { errorMessage } from "@/lib/api-client";
 import { Skeleton } from "@/components/ui/misc";
+import { tripHref } from "@/lib/routes";
 
 function NewTrip() {
   const router = useRouter();
@@ -34,7 +35,7 @@ function NewTrip() {
           create.mutate(body, {
             onSuccess: (trip) => {
               toast.success("Trip created");
-              router.push(`/trips/${trip.id}/itinerary`);
+              router.push(tripHref(trip.id, "itinerary"));
             },
             onError: (err) => toast.error(errorMessage(err)),
           })

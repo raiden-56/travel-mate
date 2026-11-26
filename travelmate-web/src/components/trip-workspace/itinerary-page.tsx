@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useRouteId, tripHref } from "@/lib/routes";
 import { CalendarRange, LayoutList, Plus, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useTrip } from "@/features/trips/hooks";
@@ -28,7 +28,7 @@ import type { ItineraryItemDto } from "@/types/api";
 type View = "days" | "overview";
 
 export default function ItineraryPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const trip = useTrip(id).data!;
   const itinerary = useItinerary(id);
   const destination = useDestination(trip.destination?.slug ?? "");
@@ -169,7 +169,7 @@ export default function ItineraryPage() {
         <div className="sticky top-32 space-y-3">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium">Day {mapDay?.dayNumber} on the map</p>
-            <Link href={`/trips/${id}/map`} className="text-[13px] text-sage hover:underline">Full map</Link>
+            <Link href={tripHref(id, "map")} className="text-[13px] text-sage hover:underline">Full map</Link>
           </div>
           <div className="h-[420px] overflow-hidden rounded-lg border border-line">
             {mapItems.length > 0 ? (

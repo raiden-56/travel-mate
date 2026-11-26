@@ -1,13 +1,13 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useRouteId } from "@/lib/routes";
 import { toast } from "sonner";
 import { useTrip, useUpdateTrip } from "@/features/trips/hooks";
 import { TripForm } from "@/components/trips/trip-form";
 import { ApiError, errorMessage } from "@/lib/api-client";
 
 export default function TripSettingsPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const trip = useTrip(id);
   const update = useUpdateTrip(id);
   const t = trip.data!;

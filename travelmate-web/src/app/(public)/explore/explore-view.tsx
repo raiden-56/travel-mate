@@ -12,6 +12,7 @@ import { Pagination } from "@/components/common/pagination";
 import { Input, Select } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BASE_PATH } from "@/demo/config";
 
 const budgetOptions = [
   { value: "", label: "Any budget" },
@@ -67,7 +68,7 @@ export function ExploreView() {
       // history.replaceState (synced into useSearchParams by Next) instead of router.replace:
       // a router navigation here would cancel a click on a result made during the search debounce.
       const qs = next.toString();
-      window.history.replaceState(null, "", qs ? `${pathname}?${qs}` : pathname);
+      window.history.replaceState(null, "", `${BASE_PATH}${pathname}${qs ? `?${qs}` : ""}`);
     },
     [params, pathname],
   );
@@ -196,7 +197,7 @@ export function ExploreView() {
           <EmptyState
             title="No destinations match"
             description="Try a different search, or loosen the budget and trip-length filters."
-            action={<Button variant="secondary" onClick={() => { setQ(""); window.history.replaceState(null, "", pathname); }}>Reset filters</Button>}
+            action={<Button variant="secondary" onClick={() => { setQ(""); window.history.replaceState(null, "", `${BASE_PATH}${pathname}`); }}>Reset filters</Button>}
           />
         ) : list.data ? (
           <>

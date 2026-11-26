@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { serverGet } from "@/lib/server-api";
 import type { DestinationSummary, PageResponse } from "@/types/api";
 
+export const dynamic = "force-static";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const revalidate = 3600;

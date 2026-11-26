@@ -1,29 +1,9 @@
 import type { ApiProblem, AuthResponse } from "@/types/api";
+import { IS_DEMO } from "@/demo/config";
+import { ApiError } from "./api-error";
 import { useAuthStore } from "./auth-store";
 
-export class ApiError extends Error {
-  readonly status: number;
-  readonly code: string;
-  readonly fieldErrors: { field: string; message: string }[];
-
-  constructor(problem: ApiProblem) {
-    super(problem.detail || problem.title || "Something went wrong");
-    this.name = "ApiError";
-    this.status = problem.status;
-    this.code = problem.code ?? (problem.status === 0 ? "NETWORK" : "UNKNOWN");
-    this.fieldErrors = problem.errors ?? [];
-  }
-
-  get isNotFound() {
-    return this.status === 404;
-  }
-  get isForbidden() {
-    return this.status === 403;
-  }
-  get isNetwork() {
-    return this.status === 0;
-  }
-}
+export { ApiError };
 
 /** Human-readable message for any thrown value; never leaks technical detail. */
 export function errorMessage(error: unknown): string {
@@ -77,6 +57,12 @@ export function refreshSession(): Promise<boolean> {
   if (!refreshInFlight) {
     refreshInFlight = (async () => {
       try {
+        if (IS_DEMO) {
+          const { demoRequest } = await import("@/demo/router");
+          const data = await demoRequest<AuthResponse>("POST", "/auth/refresh");
+          useAuthStore.getState().setSession(data.accessToken, data.user);
+          return true;
+        }
         const res = await fetch(`${BASE}/auth/refresh`, {
           method: "POST",
           credentials: "same-origin",
@@ -101,6 +87,11 @@ export function refreshSession(): Promise<boolean> {
 }
 
 export async function api<T>(path: string, opts: RequestOptions = {}): Promise<T> {
+  if (IS_DEMO) {
+    // Static demo build: answered by the in-browser implementation of the API (src/demo).
+    const { demoRequest } = await import("@/demo/router");
+    return demoRequest<T>(opts.method ?? "GET", path, opts.query ?? {}, opts.body);
+  }
   const doFetch = async () => {
     const token = useAuthStore.getState().accessToken;
     const headers: Record<string, string> = { Accept: "application/json", ...CSRF_HEADER };

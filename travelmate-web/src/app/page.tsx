@@ -25,6 +25,8 @@ export default async function LandingPage() {
 
   return (
     <>
+      {/* Positioning context so the transparent header sits on the hero, below any page banner. */}
+      <div className="relative">
       <SiteHeader variant="overlay" />
       <main id="main" className="pb-16 lg:pb-0">
         <Hero
@@ -132,6 +134,7 @@ export default async function LandingPage() {
           </div>
         </section>
       </main>
+      </div>
       <SiteFooter />
       <MobileTabBar />
     </>

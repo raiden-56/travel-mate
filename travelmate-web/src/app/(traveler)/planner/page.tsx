@@ -20,6 +20,7 @@ import { addDays } from "@/lib/dates";
 import { isMoney } from "@/lib/money";
 import { cn, titleCase } from "@/lib/utils";
 import { TRAVEL_STYLES, type Accommodation, type Pace, type PlanProposal, type PlanRequest, type Transport, type TravelStyle } from "@/types/api";
+import { tripHref } from "@/lib/routes";
 
 const INTERESTS = ["beaches", "waterfalls", "temples", "heritage", "forts", "viewpoints", "trekking", "wildlife", "water sports", "islands", "food", "photography", "markets", "sunsets"];
 
@@ -182,7 +183,7 @@ function Planner() {
     apply.mutate(payload, {
       onSuccess: (trip) => {
         toast.success(tripId ? "Itinerary replaced with the new plan" : "Trip saved");
-        router.push(`/trips/${trip.id}/itinerary`);
+        router.push(tripHref(trip.id, "itinerary"));
       },
       onError: (e) => toast.error(errorMessage(e)),
     });

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useRouteId, tripHref } from "@/lib/routes";
 import { ArrowRight, CheckSquare, ListChecks, Sparkles, Wallet } from "lucide-react";
 import { useTrip } from "@/features/trips/hooks";
 import { useItinerary } from "@/features/itinerary/hooks";
@@ -28,12 +28,11 @@ function SectionTitle({ children, href, linkLabel }: { children: React.ReactNode
 }
 
 export default function TripOverviewPage() {
-  const { id } = useParams<{ id: string }>();
+  const id = useRouteId();
   const trip = useTrip(id).data!;
   const itinerary = useItinerary(id);
   const budget = useBudget(id);
   const checklists = useChecklists(id);
-  const base = `/trips/${id}`;
 
   const allItems = itinerary.data?.days.flatMap((d) => d.items) ?? [];
   const done = allItems.filter((i) => i.status === "COMPLETED").length;
@@ -45,7 +44,7 @@ export default function TripOverviewPage() {
     <div className="grid gap-6 lg:grid-cols-3">
       <div className="space-y-6 lg:col-span-2">
         <Card className="p-5">
-          <SectionTitle href={`${base}/itinerary`} linkLabel="Open itinerary">
+          <SectionTitle href={tripHref(id, "itinerary")} linkLabel="Open itinerary">
             {nextDay ? `Up next · Day ${nextDay.dayNumber}${nextDay.date ? ` · ${formatDate(nextDay.date, { weekday: "short", year: undefined })}` : ""}` : "Itinerary"}
           </SectionTitle>
           {itinerary.isLoading ? (
@@ -56,7 +55,7 @@ export default function TripOverviewPage() {
               <p className="mt-1 text-sm text-ink-muted">Add stops yourself, or let the planner draft a day-by-day plan.</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 <Button size="sm" asChild>
-                  <Link href={`${base}/itinerary`}>Add activities</Link>
+                  <Link href={tripHref(id, "itinerary")}>Add activities</Link>
                 </Button>
                 <Button size="sm" variant="subtle" asChild>
                   <Link href={`/planner?tripId=${id}${trip.destination ? `&destination=${trip.destination.slug}` : ""}`}>
@@ -106,7 +105,7 @@ export default function TripOverviewPage() {
 
       <div className="space-y-6">
         <Card className="p-5">
-          <SectionTitle href={`${base}/budget`} linkLabel="Budget">
+          <SectionTitle href={tripHref(id, "budget")} linkLabel="Budget">
             <span className="flex items-center gap-2"><Wallet className="size-4 text-sage" /> Money</span>
           </SectionTitle>
           {budget.isLoading ? (
@@ -137,7 +136,7 @@ export default function TripOverviewPage() {
         </Card>
 
         <Card className="p-5">
-          <SectionTitle href={`${base}/checklist`} linkLabel="Checklist">
+          <SectionTitle href={tripHref(id, "checklist")} linkLabel="Checklist">
             <span className="flex items-center gap-2"><ListChecks className="size-4 text-sage" /> Packing</span>
           </SectionTitle>
           {checklists.isLoading ? (

@@ -10,6 +10,7 @@ import { Field, Input } from "@/components/ui/input";
 import { useLogin } from "@/features/auth/hooks";
 import { loginSchema, type LoginValues } from "@/features/auth/schemas";
 import { ApiError, errorMessage } from "@/lib/api-client";
+import { DemoLoginHint } from "@/components/layout/demo-banner";
 
 function safeNext(next: string | null): string {
   // Only allow same-site relative paths to avoid open redirects.
@@ -65,6 +66,12 @@ function LoginForm() {
           Create an account
         </Link>
       </p>
+      <DemoLoginHint
+        onUse={(email, password) => {
+          form.setValue("email", email);
+          form.setValue("password", password);
+        }}
+      />
     </>
   );
 }

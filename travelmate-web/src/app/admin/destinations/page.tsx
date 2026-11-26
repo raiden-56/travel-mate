@@ -19,6 +19,7 @@ import { useAuthStore, hasPermission } from "@/lib/auth-store";
 import { errorMessage } from "@/lib/api-client";
 import { formatDate } from "@/lib/dates";
 import type { AdminDestinationRow } from "@/types/api";
+import { adminDestinationHref } from "@/lib/routes";
 
 function DestinationsTable() {
   const router = useRouter();
@@ -53,7 +54,7 @@ function DestinationsTable() {
       ) : list.isError ? (
         <ErrorState error={list.error} onRetry={() => list.refetch()} />
       ) : list.data?.items.length === 0 ? (
-        <EmptyState title="No destinations found" action={<Button onClick={() => router.push("/admin/destinations/new")}><Plus /> New destination</Button>} />
+        <EmptyState title="No destinations found" action={<Button onClick={() => router.push(adminDestinationHref("new"))}><Plus /> New destination</Button>} />
       ) : (
         <div className="overflow-x-auto rounded-lg bg-surface shadow-[var(--shadow-soft)]">
           <table className="w-full min-w-[680px] text-sm">
@@ -70,7 +71,7 @@ function DestinationsTable() {
               {list.data?.items.map((d) => (
                 <tr key={d.id} className="hover:bg-surface-muted/50">
                   <td className="px-4 py-3">
-                    <Link href={`/admin/destinations/${d.id}`} className="font-medium hover:text-sage">{d.name}</Link>
+                    <Link href={adminDestinationHref(d.id)} className="font-medium hover:text-sage">{d.name}</Link>
                     <p className="text-xs text-ink-muted">{d.region}, {d.state} {d.featured && "· Featured"}</p>
                   </td>
                   <td className="px-4 py-3">
@@ -90,7 +91,7 @@ function DestinationsTable() {
                           <Button size="icon-sm" variant="ghost" onClick={() => run(d.id, "publish")} aria-label={`Publish ${d.name}`} title="Publish"><Eye /></Button>
                         )
                       )}
-                      <Button size="icon-sm" variant="ghost" asChild><Link href={`/admin/destinations/${d.id}`} aria-label={`Edit ${d.name}`}><Pencil /></Link></Button>
+                      <Button size="icon-sm" variant="ghost" asChild><Link href={adminDestinationHref(d.id)} aria-label={`Edit ${d.name}`}><Pencil /></Link></Button>
                       <Button size="icon-sm" variant="ghost" onClick={() => setToDelete(d)} aria-label={`Delete ${d.name}`} className="hover:text-danger"><Trash2 /></Button>
                     </div>
                   </td>
@@ -118,7 +119,7 @@ function DestinationsTable() {
 export default function AdminDestinationsPage() {
   return (
     <>
-      <PageHeader title="Destinations" actions={<Button asChild><Link href="/admin/destinations/new"><Plus /> New destination</Link></Button>} />
+      <PageHeader title="Destinations" actions={<Button asChild><Link href={adminDestinationHref("new")}><Plus /> New destination</Link></Button>} />
       <Suspense>
         <DestinationsTable />
       </Suspense>

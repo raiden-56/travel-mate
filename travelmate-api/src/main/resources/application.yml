@@ -1,0 +1,83 @@
+server:
+  port: ${PORT:8080}
+  error:
+    include-stacktrace: never
+    include-message: never
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: travelmate-api
+  profiles:
+    default: local
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        default_batch_fetch_size: 50
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/common
+  jackson:
+    default-property-inclusion: always
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+travelmate:
+  frontend-url: ${FRONTEND_URL:http://localhost:3000}
+  jwt:
+    secret: ${JWT_SECRET:}
+    access-ttl: 15m
+    refresh-ttl: 30d
+    issuer: travelmate
+  cookie:
+    secure: ${COOKIE_SECURE:true}
+  rate-limit:
+    auth-per-window: 20
+    auth-window: 10m
+    ai-per-window: 10
+    ai-window: 1h
+  bootstrap:
+    admin-email: ${TRAVELMATE_BOOTSTRAP_ADMIN_EMAIL:}
+    admin-password: ${TRAVELMATE_BOOTSTRAP_ADMIN_PASSWORD:}
+  ai:
+    anthropic-api-key: ${ANTHROPIC_API_KEY:}
+    model: ${ANTHROPIC_MODEL:claude-opus-5-5}
+    effort: ${ANTHROPIC_EFFORT:medium}
+    timeout: 120s
+  routing:
+    provider: ${ROUTING_PROVIDER:osrm}
+    osrm-base-url: ${OSRM_BASE_URL:https://router.project-osrm.org}
+    timeout: 8s
+  weather:
+    provider: ${WEATHER_PROVIDER:open-meteo}
+    open-meteo-base-url: ${OPEN_METEO_BASE_URL:https://api.open-meteo.com}
+    cache-ttl: 30m
+    timeout: 8s
+
+logging:
+  level:
+    root: INFO
+    com.travelmate: INFO

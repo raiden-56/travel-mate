@@ -1,0 +1,24 @@
+# Local development profile: zero external dependencies (H2 file DB in PostgreSQL mode).
+# DEV-ONLY defaults below. Never use these values outside your own machine.
+# Behind a TLS-inspecting corporate proxy on Windows, start the JVM with
+#   -Djavax.net.ssl.trustStoreType=Windows-ROOT
+# so Open-Meteo / OSRM calls trust the corporate root CA (otherwise weather returns 503 and routes fall back to straight-line).
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/travelmate;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;AUTO_SERVER=TRUE
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: false
+
+travelmate:
+  jwt:
+    # dev-only signing key (>= 32 bytes). Production must set JWT_SECRET.
+    secret: ${JWT_SECRET:local-dev-only-signing-key-change-me-0123456789abcdef}
+  cookie:
+    secure: ${COOKIE_SECURE:false}
+  bootstrap:
+    # dev-only super admin, created on first start if missing.
+    admin-email: ${TRAVELMATE_BOOTSTRAP_ADMIN_EMAIL:admin@travelmate.local}
+    admin-password: ${TRAVELMATE_BOOTSTRAP_ADMIN_PASSWORD:TravelMate-dev-2026}

@@ -1,0 +1,10 @@
+# Production-like profile: PostgreSQL 16 + PostGIS. All values come from the environment.
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/travelmate}
+    username: ${DB_USER:travelmate}
+    password: ${DB_PASSWORD:}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+  flyway:
+    locations: classpath:db/migration/common,classpath:db/migration/postgresql

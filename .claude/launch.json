@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "travelmate-web", "dev"],
+      "env": { "NODE_OPTIONS": "--use-system-ca" },
+      "port": 3000
+    },
+    {
+      "name": "api",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd travelmate-api && java -Djavax.net.ssl.trustStoreType=Windows-ROOT -jar target\\travelmate-api-0.1.0-SNAPSHOT.jar"],
+      "port": 8080
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   TravelMate design tokens — see docs/DESIGN_SYSTEM.md
+   Warm ivory canvas, forest/sage structure, amber + terracotta accents.
+   --------------------------------------------------------------------------- */
+:root {
+  --canvas: #f6f3eb;
+  --surface: #ffffff;
+  --surface-muted: #efebe1;
+  --ink: #282a27;
+  --ink-muted: #787b73;
+  --line: #e7e4dc;
+  --sage: #58745b;
+  --sage-soft: #e3eadf;
+  --forest: #283c32;
+  --amber: #d5a06a;
+  --amber-soft: #f5e8d8;
+  --terracotta: #c78165;
+  --terracotta-soft: #f4e2da;
+  --danger: #b4533e;
+  --on-forest: #f6f3eb;
+  --shadow-color: 40 40 30;
+}
+
+:root[data-theme="dark"] {
+  --canvas: #161a17;
+  --surface: #1f2420;
+  --surface-muted: #262c27;
+  --ink: #ece9e1;
+  --ink-muted: #9ea195;
+  --line: #323832;
+  --sage: #8fae90;
+  --sage-soft: #2a352b;
+  --forest: #b9cfba;
+  --amber: #dcae7c;
+  --amber-soft: #3a3024;
+  --terracotta: #d4937a;
+  --terracotta-soft: #3b2a24;
+  --danger: #e07a62;
+  --on-forest: #161a17;
+  --shadow-color: 0 0 0;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-forest: var(--forest);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-danger: var(--danger);
+  --color-on-forest: var(--on-forest);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope Variable", "Inter Variable", ui-sans-serif, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --shadow-soft: 0 1px 2px rgb(var(--shadow-color) / 0.05), 0 4px 16px rgb(var(--shadow-color) / 0.05);
+  --shadow-lift: 0 2px 4px rgb(var(--shadow-color) / 0.06), 0 12px 32px rgb(var(--shadow-color) / 0.1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--amber-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes tm-fade { from { opacity: 0 } to { opacity: 1 } }
+@keyframes tm-pop { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98) } to { opacity: 1; transform: translate(-50%, -50%) scale(1) } }
+@keyframes tm-slide { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
+
+/* Leaflet: keep the map calm and on-palette */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--surface-muted);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
+}
+.tm-marker {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  color: #fff;
+  font: 600 12px/1 var(--font-sans);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+}

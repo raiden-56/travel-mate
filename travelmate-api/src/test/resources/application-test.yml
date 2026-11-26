@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:travelmate-test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+
+travelmate:
+  jwt:
+    secret: test-only-signing-key-0123456789abcdef0123456789
+  cookie:
+    secure: false
+  rate-limit:
+    auth-per-window: 10000
+    ai-per-window: 10000
+  bootstrap:
+    admin-email: ""
+    admin-password: ""
+  ai:
+    anthropic-api-key: ""
+  # Tests never call external services.
+  routing:
+    provider: none
+  weather:
+    provider: none

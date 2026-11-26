@@ -71,6 +71,7 @@ toggles dark from the account menu (stored per device). Never use purple/blue gr
 
 ## Maps
 
-Leaflet with CARTO Voyager tiles on OpenStreetMap data (configurable via `NEXT_PUBLIC_MAP_TILE_URL`).
+Leaflet with the OpenStreetMap standard tiles (configurable via `NEXT_PUBLIC_MAP_TILE_URL`). CARTO Voyager was the
+original choice, but its basemaps now require an API key.
 Markers are round, white-bordered, colored by category (`CATEGORY_COLORS`), numbered by visit order.
 Routes draw in `forest` at 75 % opacity.

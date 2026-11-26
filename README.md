@@ -52,7 +52,7 @@ Copy `.env.example` to `.env` and fill in values first. The `postgres` profile a
 | AI planner | Deterministic offline planner over curated places — labelled "Offline planner" in the UI | `ANTHROPIC_API_KEY` (optional `ANTHROPIC_MODEL`) |
 | Weather | Open-Meteo (keyless, real data) | — |
 | Routing | OSRM public demo server, falling back to straight-line distance labelled "approximate" | `OSRM_BASE_URL` for your own router |
-| Map tiles | CARTO Voyager on OpenStreetMap | `NEXT_PUBLIC_MAP_TILE_URL` / `_ATTRIBUTION` |
+| Map tiles | OpenStreetMap standard tiles (keyless; for heavier traffic use your own or a commercial tile provider) | `NEXT_PUBLIC_MAP_TILE_URL` / `_ATTRIBUTION` |
 | Email | Logged to the API console (dev only) | SMTP settings (Phase 2) |
 | Storage, payments, SMS | Not used in Phase 1 | Phase 2/3 |
 

@@ -6,12 +6,12 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Polyline, Popup, TileLayer, useMap } from "react-leaflet";
 import type { MapMarker, TravelMapProps } from "./types";
 
-// Tile provider is configurable; defaults to CARTO Voyager on OpenStreetMap data.
-const TILE_URL =
-  process.env.NEXT_PUBLIC_MAP_TILE_URL ?? "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+// Tile provider is configurable; defaults to the keyless OpenStreetMap standard tiles.
+// (CARTO's basemaps used to be keyless but now answer every tile with "API KEY REQUIRED".)
+const TILE_URL = process.env.NEXT_PUBLIC_MAP_TILE_URL ?? "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 const TILE_ATTRIBUTION =
   process.env.NEXT_PUBLIC_MAP_TILE_ATTRIBUTION ??
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 const iconCache = new Map<string, L.DivIcon>();
 function markerIcon(m: MapMarker): L.DivIcon {
